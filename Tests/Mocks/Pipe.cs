@@ -6,7 +6,8 @@ namespace Tests.Mocks
 	public class Pipe : IPipe<Message1, Message2>
 	{
 		private Action<Message2>? _consumer;
-		internal static IMessage? LastMessageProcessed;
+		internal static IMessage? LastGlobalMessageProcessed;
+		internal IMessage? LastMessageProcessed;
 
 		public void Handle(Message1 message)
 		{
@@ -16,6 +17,7 @@ namespace Tests.Mocks
 			}
 
 			LastMessageProcessed = message;
+			LastGlobalMessageProcessed = message;
 			_consumer(new Message2 {CorrelationId = message.CorrelationId});
 		}
 

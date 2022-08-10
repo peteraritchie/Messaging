@@ -78,7 +78,7 @@ public class ComposingBusByDiscovery
 		var message1 = new Message1 { CorrelationId = "1234" };
 		bus.Handle(message1);
 
-		Assert.Same(message1, Pipe.LastMessageProcessed);
+		Assert.Same(message1, Pipe.LastGlobalMessageProcessed);
 		Assert.NotNull(Message2Consumer.LastMessageReceived);
 		Assert.Equal(message1.CorrelationId, Message2Consumer.LastMessageReceived!.CorrelationId);
 	}

@@ -9,7 +9,7 @@ public class ManuallyComposingBus
 {
 	public ManuallyComposingBus()
 	{
-		Pipe.LastMessageProcessed = null;
+		Pipe.LastGlobalMessageProcessed = null;
 	}
 
 	[Fact]
@@ -27,7 +27,7 @@ public class ManuallyComposingBus
 
 		bus.Handle(message1);
 
-		Assert.Same(message1, Pipe.LastMessageProcessed);
+		Assert.Same(message1, Pipe.LastGlobalMessageProcessed);
 		Assert.NotNull(Message2Consumer.LastMessageReceived);
 		Assert.Equal(message1.CorrelationId, Message2Consumer.LastMessageReceived!.CorrelationId);
 	}
@@ -47,7 +47,7 @@ public class ManuallyComposingBus
 
 		bus.Handle(message1);
 
-		Assert.Same(message1, Pipe.LastMessageProcessed);
+		Assert.Same(message1, Pipe.LastGlobalMessageProcessed);
 		Assert.NotNull(Message2Consumer.LastMessageReceived);
 		Assert.Equal(message1.CorrelationId, Message2Consumer.LastMessageReceived!.CorrelationId);
 	}
@@ -69,7 +69,7 @@ public class ManuallyComposingBus
 
 		bus.Handle(message1);
 
-		Assert.Same(message1, Pipe.LastMessageProcessed);
+		Assert.Same(message1, Pipe.LastGlobalMessageProcessed);
 		Assert.NotNull(Message2Consumer.LastMessageReceived);
 		Assert.Equal(message1.CorrelationId, Message2Consumer.LastMessageReceived!.CorrelationId);
 	}
@@ -108,8 +108,8 @@ public class ManuallyComposingBus
 		bus.Handle(message4);
 
 		Assert.NotNull(message5);
+		Assert.Null(pipe.LastMessageProcessed);
 		Assert.Equal(message4.CorrelationId, message5!.CorrelationId);
-		Assert.NotNull(Pipe.LastMessageProcessed);
 		Assert.Equal(message4.CorrelationId, message5.CorrelationId);
 	}
 
