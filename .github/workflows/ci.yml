@@ -30,5 +30,4 @@ jobs:
 
     - name: Test
       run: |
-        dotnet test --no-build --filter Category!=Integration --verbosity normal --configuration Release
-        set
+        dotnet test --no-restore --no-build --filter Category!=Integration --verbosity normal --configuration Release

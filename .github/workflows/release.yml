@@ -58,11 +58,11 @@ jobs:
         run: dotnet build --no-restore --configuration Release /p:Version=${VERSION}
 
       - name: Test
-        run: dotnet test --no-build --filter Category!=Integration --verbosity normal --configuration Release /p:Version=${VERSION}
+        run: dotnet test --no-restore --no-build --filter Category!=Integration --verbosity normal --configuration Release /p:Version=${VERSION}
 
       - name: Create packages
         run: |
-          dotnet pack --no-build --configuration Release /p:Version=${VERSION}
+          dotnet pack --no-restore --no-build --configuration Release /p:Version=${VERSION}
           
       - name: Publish Nuget to Github Packages
         run: |
