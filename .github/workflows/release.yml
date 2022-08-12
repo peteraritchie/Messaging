@@ -1,0 +1,73 @@
+name: Release
+
+on:
+  # Triggers the workflow on push or pull request events but only for tags that match vn.n.n
+  push:
+    tags:
+    - "v[0-9]+.[0-9]+.[0-9]+"
+env:
+  NUGET_FEED_URL: https://api.nuget.org/v3/index.json
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    permissions:
+      packages: write
+
+    steps:
+      - name: report
+        run: |
+          echo github.actor:${{ github.actor }}
+          echo github.job:${{ github.job }}
+          echo github.ref:${{ github.ref }}
+          echo github.ref_name:${{ github.ref_name }}
+          echo github.ref_protected:${{ github.ref_protected }}
+          echo github.ref_type:${{ github.ref_type }}
+          echo github.path:${{ github.path }}
+          echo github.repository:${{ github.repository }}
+          echo github.repository_owner:${{ github.repository_owner }}
+          echo github.repositoryUrl:${{ github.repositoryUrl }}
+          echo github.run_id:${{ github.run_id }}
+          echo github.run_number:${{ github.run_number }}
+          echo github.triggering_actor:${{ github.triggering_actor }}
+          echo github.workflow:${{ github.workflow }}
+          echo github.workspace:${{ github.workspace }}
+
+      - name: Clone source
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Set VERSION variable from tag
+        run: |
+          echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
+          echo Build version ${VERSION}
+
+      - name: Setup .NET 6.0
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore --configuration Release /p:Version=${VERSION}
+
+      - name: Test
+        run: dotnet test --no-build --filter Category!=Integration --verbosity normal --configuration Release /p:Version=${VERSION}
+
+      - name: Create packages
+        run: |
+          dotnet pack --no-build --configuration Release /p:Version=${VERSION}
+          
+      - name: Publish Nuget to Github Packages
+        run: |
+          dotnet nuget add source --username ${{ github.triggering_actor }} --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+          dotnet nuget push Primitives/bin/Release/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }}  --source "github"
+          dotnet nuget push Patterns/bin/Release/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }}  --source "github"
+          # dotnet nuget push Primitives/bin/Release/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s $NUGET_FEED_URL
+          # dotnet nuget push Patterns/bin/Release/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s $NUGET_FEED_URL

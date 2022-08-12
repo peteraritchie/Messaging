@@ -69,6 +69,8 @@ public class Exceptions
 		var ex = Activator.CreateInstance(typeof(T), @object) as T;
 		Assert.NotNull(ex);
 	}
+
+#pragma warning disable SYSLIB0011 // BinaryFormatter serialization is obsolete
 	private void Serialize<T>() where T : Exception, new()
 	{
 		var ex = new T();
@@ -94,4 +96,5 @@ public class Exceptions
 			stream.Close();
 		}
 	}
+#pragma warning restore SYSLIB0011 // BinaryFormatter serialization is obsolete
 }

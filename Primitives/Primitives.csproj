@@ -5,6 +5,20 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RootNamespace>Pri.Messaging.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+    <AssemblyName>Pri.Messaging.$(MSBuildProjectName)</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <VersionPrefix>3.0.0</VersionPrefix>
+    <VersionSuffix>beta</VersionSuffix>
+    <Authors>Peter Ritchie</Authors>
+    <Owners>Peter Ritchie</Owners>
+    <Description>A set of messaging primitive types.</Description>
+    <Copyright>Copyright © Peter Ritchie 2022</Copyright>
+    <PackageProjectUrl>https://github.com/peteraritchie/Messaging</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/peteraritchie/Messaging.git</RepositoryUrl>
+    <PackageTags>Messaging message-oriented events primitives</PackageTags>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
 
