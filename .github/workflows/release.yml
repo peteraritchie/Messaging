@@ -81,7 +81,7 @@ jobs:
       - name: upload code coverage badge data
         uses: exuanbo/actions-deploy-gist@v1
         with:
-          token: ${{ secrets.GITHUB_GIST_TOKEN }}
+          token: ${{ secrets.GIST_TOKEN }}
           gist_id: ${COVERAGE_GIST_ID}
           file_path: coverage.shields.json
           file_type: text
