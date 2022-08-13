@@ -9,7 +9,6 @@ on:
 env:
   NUGET_FEED_URL: https://api.nuget.org/v3/index.json
   COVERAGE_GIST_ID: d8e43c117fc1d20ffb8f3e9f170ee1c4
-  COVERAGE_GIST_URL: https://gist.github.com/${COVERAGE_GIST_ID}
 
 jobs:
 
