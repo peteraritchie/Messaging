@@ -32,7 +32,7 @@
     <Copyright>Copyright © Peter Ritchie 2022</Copyright>
     <PackageProjectUrl>https://github.com/peteraritchie/Messaging</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>hhttps://github.com/peteraritchie/Messaging.git</RepositoryUrl>
+    <RepositoryUrl>https://github.com/peteraritchie/Messaging.git</RepositoryUrl>
     <PackageIcon>inbox.png</PackageIcon>
     <PackageTags>Messaging message-oriented events</PackageTags>
   </PropertyGroup>
