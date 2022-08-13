@@ -1,12 +1,14 @@
 name: Release
 
 on:
-  # Triggers the workflow on push or pull request events but only for tags that match vn.n.n
+  # Triggers the workflow on push or pull request events but only for SEMVER tags that start with 'v'
   push:
     tags:
-    - "v[0-9]+.[0-9]+.[0-9]+"
+    - '^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$'
 env:
   NUGET_FEED_URL: https://api.nuget.org/v3/index.json
+  COVERAGE_GIST_ID: d8e43c117fc1d20ffb8f3e9f170ee1c4
+  COVERAGE_GIST_URL: https://gist.github.com/${{ COVERAGE_GIST_ID }}
 
 jobs:
 
@@ -58,11 +60,30 @@ jobs:
         run: dotnet build --no-restore --configuration Release /p:Version=${VERSION}
 
       - name: Test
-        run: dotnet test --no-restore --no-build --filter Category!=Integration --verbosity normal --configuration Release /p:Version=${VERSION}
+        run: |
+          dotnet test --no-restore --no-build --filter Category!=Integration --verbosity normal --configuration Release -p:CollectCoverage=true -p:CoverletOutput=TestResults/ -p:CoverletOutputFormat=opencover
 
       - name: Create packages
         run: |
           dotnet pack --no-restore --no-build --configuration Release /p:Version=${VERSION}
+
+      - name: Get total code coverage
+        uses: simon-k/dotnet-code-coverage-badge@v1.0.0
+        id: code-coverage
+        with:
+          path: Tests/TestResults/coverage.opencover.xml
+
+      - name: Print code coverage
+        run: |
+          echo "{\"schemaVersion\": 1, \"label\": \"coverage\", \"message\": \"${{steps.code-coverage.outputs.percentage}}%\", \"color\": \"green\"}" > coverage.shields.json
+
+      - name: upload code coverage badge data
+        uses: exuanbo/actions-deploy-gist@v1
+        with:
+          token: ${{ secrets.GITHUB_GIST_TOKEN }}
+          gist_id: ${{ COVERAGE_GIST_ID }}
+          file_path: coverage.shields.json
+          file_type: text
 
       - name: Create Github release
         uses: actions/create-release@v1
@@ -74,6 +95,17 @@ jobs:
           tag_name: ${{ github.ref }}
           body_path: CHANGELOG.md
 
+      - name: upload shields coverage json
+        id: upload-shields-coverage-asset
+        uses: actions/upload-release-asset@v1.1.3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: coverage.shields.json
+          asset_name: coverage.shields.json
+          asset_content_type: application/json
+
       - name: upload Primitives nuget package
         id: upload-primitives-asset
         uses: actions/upload-release-asset@v1.10.0
@@ -81,8 +113,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: Primitives/bin/Release/Pri.Messaging.Primitives.${VERSION}.nupkg
-          asset_name: Pri.Messaging.Primitives.${VERSION}.nupkg
+          asset_path: Primitives/bin/Release/PRI.Messaging.Primitives.${VERSION}.nupkg
+          asset_name: PRI.Messaging.Primitives.${VERSION}.nupkg
           asset_content_type: application/octet-stream
 
       - name: upload Patterns nuget package
@@ -92,25 +124,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: Primitives/bin/Release/Pri.Messaging.Patterns.${VERSION}.nupkg
-          asset_name: Pri.Messaging.Patterns.${VERSION}.nupkg
+          asset_path: Primitives/bin/Release/PRI.Messaging.Patterns.${VERSION}.nupkg
+          asset_name: PRI.Messaging.Patterns.${VERSION}.nupkg
           asset_content_type: application/octet-stream
-
-      - name: upload opencover data
-        id: upload-opencover-asset
-        uses: actions/upload-release-asset@v1.1.3
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: Tests\TestResults\coverage.opencover.xml
-          asset_name: coverage.opencover.xml
-          asset_content_type: application/xml
 
       - name: Publish Nuget to Github Packages
         run: |
           dotnet nuget add source --username ${{ github.triggering_actor }} --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
-          dotnet nuget push Primitives/bin/Release/Pri.Messaging.Primitives.${VERSION}.nupkg --api-key ${{ secrets.GITHUB_TOKEN }}  --source "github"
-          dotnet nuget push Patterns/bin/Release/Pri.Messaging.Patterns.${VERSION}.nupkg --api-key ${{ secrets.GITHUB_TOKEN }}  --source "github"
-          # dotnet nuget push Primitives/bin/Release/Pri.Messaging.Primitives.${VERSION}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s $NUGET_FEED_URL
-          # dotnet nuget push Patterns/bin/Release/Pri.Messaging.Patterns.${VERSION}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s $NUGET_FEED_URL
+          dotnet nuget push Primitives/bin/Release/PRI.Messaging.Primitives.${VERSION}.nupkg --api-key ${{ secrets.GITHUB_TOKEN }}  --source "github"
+          dotnet nuget push Patterns/bin/Release/PRI.Messaging.Patterns.${VERSION}.nupkg --api-key ${{ secrets.GITHUB_TOKEN }}  --source "github"
+          dotnet nuget push Primitives/bin/Release/PRI.Messaging.Primitives.${VERSION}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s $NUGET_FEED_URL
+          dotnet nuget push Patterns/bin/Release/PRI.Messaging.Patterns.${VERSION}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s $NUGET_FEED_URL
