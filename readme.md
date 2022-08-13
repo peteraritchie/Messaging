@@ -2,13 +2,16 @@
 
 ![chat](https://img.shields.io/gitter/room/peteraritchie/Messaging)
 
-![Checks](https://img.shields.io/github/checks-status/peteraritchie/Messaging/main) 
+![Checks](https://img.shields.io/github/checks-status/peteraritchie/Messaging/main)
+![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/peteraritchie/d8e43c117fc1d20ffb8f3e9f170ee1c4/raw/01795d282db3399e4be7a6a404583d538bc3fc40/PRI.Messaging.opencover.json)
+
 ![Total Downloads](https://img.shields.io/github/downloads/peteraritchie/Messaging/total)
 ![Downloads(latest)](https://img.shields.io/github/downloads/peteraritchie/Messaging/latest/total)
 ![contributors](https://img.shields.io/github/contributors/peteraritchie/Messaging)
+
+![file-count](https://img.shields.io/github/directory-file-count/peteraritchie/Messaging)
 ![language](https://img.shields.io/github/languages/count/peteraritchie/Messaging)
 ![top-language](https://img.shields.io/github/languages/top/peteraritchie/Messaging)
-![file-count](https://img.shields.io/github/directory-file-count/peteraritchie/Messaging)
 
 ## Packages
 
