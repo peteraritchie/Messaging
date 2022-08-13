@@ -13,13 +13,13 @@
   <ItemGroup>
     <ProjectReference Include="..\Primitives\Primitives.csproj" />
   </ItemGroup>
- 
+
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RootNamespace>PRI.Messaging.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
-    <AssemblyName>Pri.Messaging.$(MSBuildProjectName)</AssemblyName>
+    <AssemblyName>PRI.Messaging.$(MSBuildProjectName)</AssemblyName>
     <UserSecretsId>dbd8ccbf-32fd-4358-ae8a-8f080efba4f0</UserSecretsId>
   </PropertyGroup>
 
