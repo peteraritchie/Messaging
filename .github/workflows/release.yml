@@ -9,7 +9,7 @@ on:
 env:
   NUGET_FEED_URL: https://api.nuget.org/v3/index.json
   COVERAGE_GIST_ID: d8e43c117fc1d20ffb8f3e9f170ee1c4
-  COVERAGE_GIST_URL: https://gist.github.com/${{ COVERAGE_GIST_ID }}
+  COVERAGE_GIST_URL: https://gist.github.com/${COVERAGE_GIST_ID}
 
 jobs:
 
@@ -82,7 +82,7 @@ jobs:
         uses: exuanbo/actions-deploy-gist@v1
         with:
           token: ${{ secrets.GITHUB_GIST_TOKEN }}
-          gist_id: ${{ COVERAGE_GIST_ID }}
+          gist_id: ${COVERAGE_GIST_ID}
           file_path: coverage.shields.json
           file_type: text
 
