@@ -82,7 +82,7 @@ jobs:
         uses: exuanbo/actions-deploy-gist@v1
         with:
           token: ${{ secrets.GIST_TOKEN }}
-          gist_id: ${COVERAGE_GIST_ID}
+          gist_id: d8e43c117fc1d20ffb8f3e9f170ee1c4
           file_path: coverage.shields.json
           file_type: text
 
