@@ -40,7 +40,7 @@ jobs:
           echo github.workspace:${{ github.workspace }}
 
       - name: Clone source
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
