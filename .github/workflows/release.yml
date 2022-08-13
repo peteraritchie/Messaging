@@ -98,7 +98,7 @@ jobs:
 
       - name: upload shields coverage json
         id: upload-shields-coverage-asset
-        uses: actions/upload-release-asset@v1.1.3
+        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -109,7 +109,7 @@ jobs:
 
       - name: upload Primitives nuget package
         id: upload-primitives-asset
-        uses: actions/upload-release-asset@v1.10.0
+        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -120,7 +120,7 @@ jobs:
 
       - name: upload Patterns nuget package
         id: upload-patterns-asset
-        uses: actions/upload-release-asset@v1.1.3
+        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
