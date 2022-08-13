@@ -39,4 +39,5 @@ jobs:
         path: Tests/TestResults/coverage.opencover.xml
 
     - name: Print code coverage
-      run: echo "Code coverage percentage ${{steps.code-coverage.outputs.percentage}}%"
+      run: |
+        echo "{\"schemaVersion\": 1, \"label\": \"coverage\", \"message\": \"${{steps.code-coverage.outputs.percentage}}%\", \"color\": \"green\"}"
