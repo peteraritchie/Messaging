@@ -31,3 +31,12 @@ jobs:
     - name: Test
       run: |
         dotnet test --no-restore --no-build --filter Category!=Integration --verbosity normal --configuration Release -p:CollectCoverage=true
+
+    - name: Get total code coverage
+      uses: simon-k/dotnet-code-coverage-badge@v1.0.0
+      id: code-coverage
+      with:
+        path: Tests/TestResults/coverage.opencover.xml
+
+    - name: Print code coverage
+      run: echo "Code coverage percentage ${{steps.code-coverage.outputs.percentage}}%"
