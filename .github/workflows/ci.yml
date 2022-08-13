@@ -30,7 +30,7 @@ jobs:
 
     - name: Test
       run: |
-        dotnet test --no-restore --no-build --filter Category!=Integration --verbosity normal --configuration Release -p:CollectCoverage=true -p:CoverletOutput=TestResults\ -p:CoverletOutputFormat=opencover
+        dotnet test --no-restore --no-build --filter Category!=Integration --verbosity normal --configuration Release -p:CollectCoverage=true -p:CoverletOutput=TestResults/ -p:CoverletOutputFormat=opencover
 
     - name: Get total code coverage
       uses: simon-k/dotnet-code-coverage-badge@v1.0.0
