@@ -47,7 +47,7 @@ jobs:
       - name: Set VERSION variable from tag
         run: |
           echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
-          echo Build version ${VERSION}
+          echo Build version $VERSION
 
       - name: Setup .NET 6.0
         uses: actions/setup-dotnet@v2
@@ -94,7 +94,7 @@ jobs:
         with:
           draft: false
           prerelease: false
-          release_name: v${VERSION}
+          release_name: v$VERSION
           tag_name: ${{ github.ref }}
           body_path: CHANGELOG.md
 
@@ -116,8 +116,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: Primitives/bin/Release/PRI.Messaging.Primitives.${VERSION}.nupkg
-          asset_name: PRI.Messaging.Primitives.${VERSION}.nupkg
+          asset_path: Primitives/bin/Release/PRI.Messaging.Primitives.$VERSION.nupkg
+          asset_name: PRI.Messaging.Primitives.$VERSION.nupkg
           asset_content_type: application/octet-stream
 
       - name: upload Patterns nuget package
@@ -127,8 +127,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: Primitives/bin/Release/PRI.Messaging.Patterns.${VERSION}.nupkg
-          asset_name: PRI.Messaging.Patterns.${VERSION}.nupkg
+          asset_path: Primitives/bin/Release/PRI.Messaging.Patterns.$VERSION.nupkg
+          asset_name: PRI.Messaging.Patterns.$VERSION.nupkg
           asset_content_type: application/octet-stream
 
       - name: Publish Nuget to Github Packages
