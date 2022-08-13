@@ -4,7 +4,7 @@ on:
   # Triggers the workflow on push or pull request events but only for SEMVER tags that start with 'v'
   push:
     tags:
-    - "v[0-9]+.[0-9]+.[0-9]+"
+    - "v[0-9]+.[0-9]+.[0-9]+-?*"
 
 env:
   NUGET_FEED_URL: https://api.nuget.org/v3/index.json
